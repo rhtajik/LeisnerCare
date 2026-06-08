@@ -1,0 +1,195 @@
+﻿@page
+@using LeisnerCare.Core.Entities
+@model LeisnerCare.Web.Pages.Reports.PatientReportModel
+@{
+    ViewData["Title"] = "Patient Rapport";
+}
+
+@if (!Model.SelectedPatientId.HasValue && Model.IsStaff)
+{
+    <h1><i class="bi bi-file-earmark-text me-2"></i>Generer Patient Rapport</h1>
+    <div class="card">
+        <div class="card-body">
+            <form method="get">
+                <div class="form-group mb-3">
+                    <label class="form-label">Vælg patient</label>
+                    <select asp-for="SelectedPatientId" asp-items="Model.Patients" class="form-select form-select-lg">
+                        <option value="">-- Vælg --</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="bi bi-eye me-2"></i>Vis rapport
+                </button>
+            </form>
+        </div>
+    </div>
+}
+else if (Model.Patient != null)
+{
+    <div class="d-print-none mb-3 d-flex gap-2">
+        <a href="/Dashboard" class="btn btn-secondary btn-lg">
+            <i class="bi bi-arrow-left me-1"></i>Tilbage
+        </a>
+        <button onclick="window.print()" class="btn btn-success btn-lg">
+            <i class="bi bi-printer me-1"></i>Gem som PDF
+        </button>
+    </div>
+
+    <div class="report-container p-4 border rounded shadow-sm bg-white">
+        <div class="text-center mb-4 border-bottom pb-3">
+            <h1 class="text-primary">
+                <i class="bi bi-heart-pulse-fill me-2"></i>LeisnerCare Parkinson Monitor
+            </h1>
+            <h3>Patient Rapport</h3>
+            <p class="text-muted">Genereret: @Model.ReportDate.ToString("dd. MMMM yyyy")</p>
+        </div>
+
+        <div class="card mb-4 border-primary">
+            <div class="card-header bg-primary text-white">
+                <h4><i class="bi bi-person-vcard me-2"></i>Patientoplysninger</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Navn:</strong> @Model.Patient.User?.FirstName @Model.Patient.User?.LastName</p>
+                        <p><strong>CPR:</strong> @Model.Patient.CprNumber</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Fødselsdato:</strong> @Model.Patient.DateOfBirth.ToShortDateString()</p>
+                        <p><strong>Diagnose:</strong> @Model.Patient.DiagnosisDate.ToShortDateString()</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4 border-info">
+            <div class="card-header bg-info text-white">
+                <h4><i class="bi bi-activity me-2"></i>Symptomer (sidste 30 dage)</h4>
+            </div>
+            <div class="card-body">
+                @if (Model.Symptoms.Any())
+                {
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Dato</th>
+                                <th>Type</th>
+                                <th>Værdi</th>
+                                <th>Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var s in Model.Symptoms)
+                            {
+                                <tr>
+                                    <td>@s.RecordedAt.ToString("dd/MM yyyy HH:mm")</td>
+                                    <td>@s.Type</td>
+                                    <td>
+                                        @if (s.Type == SymptomType.OnOff)
+                                        {
+                                            @(s.Value == 0 ? "ON" : s.Value == 1 ? "OFF" : "DYSKINESI")
+                                        }
+                                        else
+                                        {
+                                            @s.Value
+                                        }
+                                    </td>
+                                    <td>@s.Note</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="alert alert-light">Ingen symptomer registreret.</div>
+                }
+            </div>
+        </div>
+
+        <div class="card mb-4 border-success">
+            <div class="card-header bg-success text-white">
+                <h4><i class="bi bi-capsule me-2"></i>Medicin</h4>
+            </div>
+            <div class="card-body">
+                @if (Model.Medications.Any())
+                {
+                    @foreach (var med in Model.Medications)
+                    {
+                        <div class="mb-3 p-3 border rounded">
+                            <h5 class="text-success">@med.Name - @med.Dosage</h5>
+                            <p class="mb-1"><strong>Frekvens:</strong> @med.Frequency</p>
+                            <table class="table table-sm table-bordered">
+                                <thead class="table-light">
+                                    <tr><th>Taget</th><th>Effekt</th></tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var log in med.Logs.OrderByDescending(l => l.TakenAt).Take(10))
+                                    {
+                                        <tr>
+                                            <td>@log.TakenAt.ToString("dd/MM HH:mm")</td>
+                                            <td>@(log.Effectiveness?.ToString() ?? "-")/5</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-light">Ingen medicin registreret.</div>
+                }
+            </div>
+        </div>
+
+        <div class="text-center text-muted mt-4 border-top pt-3">
+            <p><i class="bi bi-shield-check me-1"></i>LeisnerCare Parkinson Monitor - Rapport</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-warning">
+        <i class="bi bi-exclamation-triangle me-2"></i>Ingen patient data fundet.
+    </div>
+}
+
+<style media="print">
+    .d-print-none {
+        display: none !important;
+    }
+
+    .report-container {
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    body {
+        font-size: 11pt;
+        background: white;
+    }
+
+    .card {
+        break-inside: avoid;
+        border: 1px solid #dee2e6 !important;
+    }
+
+    .card-header {
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .bg-primary {
+        background-color: #0d6efd !important;
+    }
+
+    .bg-info {
+        background-color: #0dcaf0 !important;
+    }
+
+    .bg-success {
+        background-color: #198754 !important;
+    }
+</style>

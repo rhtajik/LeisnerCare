@@ -1,0 +1,119 @@
+﻿@page
+@using LeisnerCare.Core.Entities
+@model LeisnerCare.Web.Pages.Symptoms.HistoryModel
+@{
+    ViewData["Title"] = "📊 Min Symptom Historik";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-clock-history me-2 text-info"></i>Min Symptom Historik</h1>
+    <a href="/Symptoms/Create" class="btn btn-primary btn-lg">
+        <i class="bi bi-plus-lg me-1"></i>Nyt Symptom
+    </a>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white border-0">
+            <div class="card-body text-center">
+                <i class="bi bi-clipboard-data display-4 mb-2"></i>
+                <h5>Total</h5>
+                <p class="display-5 fw-bold mb-0">@Model.Symptoms.Count</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white border-0">
+            <div class="card-body text-center">
+                <i class="bi bi-emoji-smile display-4 mb-2"></i>
+                <h5>Gode Dage</h5>
+                <p class="display-5 fw-bold mb-0">@Model.Symptoms.Count(s => s.Value >= 4)</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-dark border-0">
+            <div class="card-body text-center">
+                <i class="bi bi-emoji-neutral display-4 mb-2"></i>
+                <h5>OK Dage</h5>
+                <p class="display-5 fw-bold mb-0">@Model.Symptoms.Count(s => s.Value == 3)</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-danger text-white border-0">
+            <div class="card-body text-center">
+                <i class="bi bi-emoji-frown display-4 mb-2"></i>
+                <h5>Hårde Dage</h5>
+                <p class="display-5 fw-bold mb-0">@Model.Symptoms.Count(s => s.Value <= 2)</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-dark text-white">
+        <h5 class="mb-0"><i class="bi bi-list me-2"></i>Seneste Registreringer</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Dato</th>
+                        <th>Type</th>
+                        <th>Niveau</th>
+                        <th>Note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in Model.Symptoms.OrderByDescending(s => s.RecordedAt))
+                    {
+                        <tr>
+                            <td class="fw-bold">@s.RecordedAt.ToString("dd/MM yyyy HH:mm")</td>
+                            <td>
+                                <span class="badge @(s.Type == SymptomType.Mood ? "bg-warning text-dark" :
+                                                          s.Type == SymptomType.Tremor ? "bg-danger" :
+                                                          s.Type == SymptomType.OnOff ? "bg-info" : "bg-secondary")">
+                                @s.Type
+                            </span>
+                        </td>
+                        <td>
+                            @if (s.Value == 1)
+                                {
+                                    <span class="fs-4">😢</span>
+                                }
+                                else if (s.Value == 2)
+                                {
+
+                                    <span class="fs-4">😕</span>
+                                }
+                                else if (s.Value == 3)
+                                {
+
+                                    <span class="fs-4">😐</span>
+                                }
+                                else if (s.Value == 4)
+                                {
+
+                                    <span class="fs-4">🙂</span>
+                                }
+                                else if (s.Value == 5)
+                                {
+
+                                    <span class="fs-4">😄</span>
+                                }
+                                else
+                                {
+
+                                    <span>@s.Value</span>
+                                }
+                            </td>
+                            <td class="text-muted">@s.Note</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

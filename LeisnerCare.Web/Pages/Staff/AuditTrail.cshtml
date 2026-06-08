@@ -1,0 +1,33 @@
+﻿@page
+@model LeisnerCare.Web.Pages.Staff.AuditTrailModel
+@{
+    ViewData["Title"] = "Audit Trail";
+}
+
+<h1>Audit Trail - Seneste Aktivitet</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Tidspunkt</th>
+            <th>Bruger</th>
+            <th>Handling</th>
+            <th>Type</th>
+            <th>ID</th>
+            <th>Detaljer</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var log in Model.Logs)
+        {
+            <tr>
+                <td>@log.Timestamp.ToString("dd/MM HH:mm")</td>
+                <td>@log.UserName</td>
+                <td><span class="badge bg-info">@log.Action</span></td>
+                <td>@log.EntityType</td>
+                <td>@log.EntityId</td>
+                <td>@log.Details</td>
+            </tr>
+        }
+    </tbody>
+</table>

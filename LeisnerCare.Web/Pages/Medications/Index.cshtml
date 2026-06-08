@@ -1,0 +1,17 @@
+﻿@page
+@model LeisnerCare.Web.Pages.Medications.IndexModel
+@{
+    ViewData["Title"] = "Min Medicin";
+}
+
+<h1>Min Medicin</h1>
+
+@foreach (var med in Model.Medications)
+{
+    <div class="card mb-2">
+        <div class="card-body">
+            <h5>@med.Name <span class="badge bg-primary">@med.Dosage</span></h5>
+            <p>@med.Frequency</p>
+        </div>
+    </div>
+}

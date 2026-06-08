@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - LeisnerCare</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="bi bi-heart-pulse-fill me-2"></i>
+                LeisnerCare Parkinson Monitor
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Dashboard">
+                                <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                            </a>
+                        </li>
+                    }
+
+                    @if (User.IsInRole("Staff"))
+                    {
+                        <li class="nav-item"><a class="nav-link" href="/Patients">Patienter</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/Medications/Create">Medicin</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/Observations">Observationer</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/Reports/PatientReport">Rapport</a></li>
+
+                        <!-- NYE DROPDOWN -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-gear me-1"></i>Admin
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/Staff/Export">📊 Eksport</a></li>
+                                <li><a class="dropdown-item" href="/Staff/AuditTrail">🔍 Audit Trail</a></li>
+                                <li><a class="dropdown-item" href="/Staff/SymptomOverview">📈 Symptom Oversigt</a></li>
+                                <li><a class="dropdown-item" href="/Staff/MedicationOverview">💊 Medicin Oversigt</a></li>
+                            </ul>
+                        </li>
+                    }
+
+                    @if (User.IsInRole("Patient"))
+                    {
+                        <li class="nav-item"><a class="nav-link" href="/Symptoms/Create">Registrer Symptom</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/Symptoms/History">Min Historik</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/Medications/Today">Medicin</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/Reports/PatientReport">Min Rapport</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/Reports/Weekly">Ugeoversigt</a></li>
+                    }
+
+                    @if (User.IsInRole("Relative"))
+                    {
+                        <li class="nav-item"><a class="nav-link" href="/Observations">Observationer</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/Medications/Today">Medicin</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/Reports/PatientReport">📄 Rapport</a></li>
+                    }
+                </ul>
+                <partial name="_LoginPartial" />
+            </div>
+        </div>
+    </nav>
+
+    <partial name="_NotificationPartial" />
+
+    <main role="main" class="container py-4">
+        @RenderBody()
+    </main>
+
+    <footer class="footer text-center py-3 bg-light mt-auto">
+        <div class="container">
+            <span class="text-muted">© 2026 - LeisnerCare Parkinson Monitor</span>
+        </div>
+    </footer>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

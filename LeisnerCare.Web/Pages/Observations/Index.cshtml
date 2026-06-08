@@ -1,0 +1,32 @@
+﻿@page
+@model LeisnerCare.Web.Pages.Observations.IndexModel
+@{
+    ViewData["Title"] = "Observationer";
+}
+
+<h1>Observationer</h1>
+
+@if (Model.CanCreate)
+{
+    <a asp-page="Create" class="btn btn-primary btn-lg mb-3">📝 Ny Observation</a>
+}
+
+@foreach (var obs in Model.Observations)
+{
+    <div class="card mb-3 @(obs.IsClinical ? "border-danger" : "")">
+        <div class="card-header d-flex justify-content-between">
+            <span>
+                <strong>@obs.AuthorName</strong>
+                <span class="badge bg-secondary">@obs.AuthorRole</span>
+                @if (obs.IsClinical)
+                {
+                    <span class="badge bg-danger">Klinisk</span>
+                }
+            </span>
+            <span class="text-muted">@obs.CreatedAt.ToString("dd/MM yyyy HH:mm")</span>
+        </div>
+        <div class="card-body">
+            <p class="card-text fs-5">@obs.Content</p>
+        </div>
+    </div>
+}

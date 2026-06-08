@@ -1,0 +1,42 @@
+﻿@page "{id:int}"
+@model LeisnerCare.Web.Pages.Patients.DetailsModel
+@{
+    ViewData["Title"] = "Patient Detaljer";
+}
+
+<h1>Patient Detaljer</h1>
+
+<div class="card">
+    <div class="card-body">
+        <h4>@Model.Patient.User?.FirstName @Model.Patient.User?.LastName</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">CPR</dt>
+            <dd class="col-sm-9">@Model.Patient.CprNumber</dd>
+
+            <dt class="col-sm-3">Fødselsdato</dt>
+            <dd class="col-sm-9">@Model.Patient.DateOfBirth.ToShortDateString()</dd>
+
+            <dt class="col-sm-3">Diagnosedato</dt>
+            <dd class="col-sm-9">@Model.Patient.DiagnosisDate.ToShortDateString()</dd>
+
+            <dt class="col-sm-3">Telefon</dt>
+            <dd class="col-sm-9">@Model.Patient.ContactPhone</dd>
+
+            <dt class="col-sm-3">Nødkontakt</dt>
+            <dd class="col-sm-9">
+                @Model.Patient.EmergencyContactName<br />
+                @Model.Patient.EmergencyContactPhone
+            </dd>
+        </dl>
+    </div>
+</div>
+
+@if (User.IsInRole("Relative") || User.IsInRole("Patient"))
+{
+    <a href="/Dashboard" class="btn btn-secondary btn-lg mt-3">← Tilbage til dashboard</a>
+}
+else
+{
+    <a href="/Patients/Index" class="btn btn-secondary btn-lg mt-3">← Tilbage til patienter</a>
+}

@@ -1,0 +1,53 @@
+﻿@page
+@model LeisnerCare.Web.Pages.Reports.WeeklyModel
+@{
+    ViewData["Title"] = "Ugeoversigt";
+}
+
+<h1>Ugeoversigt</h1>
+
+@if (Model.Insight != null)
+{
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3>@Model.Insight.Recommendation</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h1>@Model.Insight.TotalRegistrations</h1>
+                    <p>Registreringer</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body text-center">
+                    <h1>@Model.Insight.OffPeriods</h1>
+                    <p>OFF-perioder</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning">
+                <div class="card-body text-center">
+                    <h1>@Model.Insight.TremorAverage</h1>
+                    <p>Tremor snit</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h1>@Model.Insight.MoodAverage</h1>
+                    <p>Humør snit</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button onclick="window.print()" class="btn btn-secondary btn-lg mt-4">🖨️ Udskriv / Gem som PDF</button>
+}

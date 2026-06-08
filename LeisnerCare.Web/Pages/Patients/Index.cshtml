@@ -1,0 +1,87 @@
+﻿@page
+@model LeisnerCare.Web.Pages.Patients.IndexModel
+@{
+    ViewData["Title"] = "Patienter";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-people-fill me-2 text-primary"></i>Patienter</h1>
+    <a asp-page="Create" class="btn btn-success btn-lg">
+        <i class="bi bi-plus-lg me-2"></i>Ny Patient
+    </a>
+</div>
+
+@* ─── MOBIL VIEW (cards) ─── *@
+<div class="d-md-none">
+    @foreach (var patient in Model.Patients)
+    {
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">@patient.User?.FirstName @patient.User?.LastName</h5>
+                <p class="card-text mb-1">
+                    <span class="badge bg-secondary">@patient.CprNumber</span>
+                </p>
+                <p class="card-text text-muted mb-2">
+                    <i class="bi bi-calendar me-1"></i>@patient.DateOfBirth.ToString("dd-MM-yyyy")
+                </p>
+                <div class="d-flex gap-2">
+                    <a href="/Patients/Details/@patient.Id" class="btn btn-sm btn-info flex-fill">
+                        <i class="bi bi-eye"></i> Detaljer
+                    </a>
+                    <a href="/Patients/Edit/@patient.Id" class="btn btn-sm btn-warning flex-fill">
+                        <i class="bi bi-pencil"></i> Rediger
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@* ─── DESKTOP VIEW (tabel) ─── *@
+<div class="d-none d-md-block">
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th><i class="bi bi-person me-1"></i>Navn</th>
+                            <th><i class="bi bi-card-text me-1"></i>CPR</th>
+                            <th><i class="bi bi-calendar me-1"></i>Fødselsdato</th>
+                            <th><i class="bi bi-calendar-check me-1"></i>Diagnose</th>
+                            <th><i class="bi bi-telephone me-1"></i>Telefon</th>
+                            <th class="text-end">Handlinger</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var patient in Model.Patients)
+                        {
+                            <tr>
+                                <td class="fw-bold">
+                                    @patient.User?.FirstName @patient.User?.LastName
+                                </td>
+                                <td><span class="badge bg-secondary">@patient.CprNumber</span></td>
+                                <td>@patient.DateOfBirth.ToString("dd-MM-yyyy")</td>
+                                <td>@patient.DiagnosisDate.ToString("dd-MM-yyyy")</td>
+                                <td>@patient.ContactPhone</td>
+                                <td class="text-end">
+                                    <div class="btn-group">
+                                        <a href="/Patients/Details/@patient.Id" class="btn btn-sm btn-info" title="Detaljer">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a href="/Patients/Edit/@patient.Id" class="btn btn-sm btn-warning" title="Rediger">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a href="/Reports/PatientReport?SelectedPatientId=@patient.Id" class="btn btn-sm btn-success" title="Rapport">
+                                            <i class="bi bi-file-earmark-text"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

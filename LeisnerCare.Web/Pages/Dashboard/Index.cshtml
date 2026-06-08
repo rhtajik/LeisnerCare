@@ -1,0 +1,271 @@
+﻿@page
+@model LeisnerCare.Web.Pages.Dashboard.IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container py-4">
+    <div class="d-flex align-items-center mb-4">
+        <div class="bg-primary text-white rounded-circle p-3 me-3">
+            <i class="bi bi-speedometer2 fs-2"></i>
+        </div>
+        <h1 class="mb-0">Dashboard</h1>
+    </div>
+
+    @* ─── STAFF DASHBOARD ─── *@
+    @if (Model.IsStaff)
+    {
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white border-0 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-people display-4 mb-2 opacity-75"></i>
+                        <h5 class="card-title">Patienter</h5>
+                        <p class="display-5 fw-bold mb-0">@Model.AllPatients.Count</p>
+                        <a href="/Patients" class="btn btn-light btn-sm mt-2">Se alle</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-success text-white border-0 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-capsule display-4 mb-2 opacity-75"></i>
+                        <h5 class="card-title">Medicin</h5>
+                        <p class="display-5 fw-bold mb-0">@Model.RecentSymptoms.Count</p>
+                        <a href="/Medications/Create" class="btn btn-light btn-sm mt-2">Administrer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-info text-white border-0 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-journal-medical display-4 mb-2 opacity-75"></i>
+                        <h5 class="card-title">Observationer</h5>
+                        <p class="display-5 fw-bold mb-0">@Model.RecentObservations.Count</p>
+                        <a href="/Observations" class="btn btn-light btn-sm mt-2">Se alle</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning text-dark border-0 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-file-earmark-text display-4 mb-2 opacity-75"></i>
+                        <h5 class="card-title">Rapporter</h5>
+                        <p class="mb-0">PDF & CSV</p>
+                        <a href="/Reports/PatientReport" class="btn btn-dark btn-sm mt-2">Generer</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-list me-2"></i>Alle Patienter</h5>
+                <a href="/Patients/Create" class="btn btn-success btn-sm">
+                    <i class="bi bi-plus-lg me-1"></i>Ny Patient
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-striped table-hover mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>CPR-nummer</th>
+                            <th>Fødselsdato</th>
+                            <th>Handlinger</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model.AllPatients)
+                        {
+                            <tr>
+                                <td class="fw-bold">@p.CprNumber</td>
+                                <td>@p.DateOfBirth.ToString("dd-MM-yyyy")</td>
+                                <td>
+                                    <a href="/Patients/Details/@p.Id" class="btn btn-sm btn-info">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="/Patients/Edit/@p.Id" class="btn btn-sm btn-warning">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+    @* ─── PATIENT DASHBOARD ─── *@
+    @if (Model.IsPatient && Model.PatientProfile != null)
+    {
+        var untakenCount = Model.RecentMedications?.Count(m => !m.IsTakenToday) ?? 0;
+
+        @if (untakenCount > 0)
+        {
+            <div class="alert alert-warning border-warning border-3 shadow-lg mb-4" role="alert">
+                <div class="d-flex align-items-start">
+                    <div class="bg-warning text-dark rounded-circle p-3 me-3 shadow-sm">
+                        <i class="bi bi-capsule fs-1"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h4 class="alert-heading mb-2 text-dark">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>Medicin Påmindelse
+                        </h4>
+                        <p class="mb-2 fs-5">
+                            Du har <strong class="text-danger fs-4">@untakenCount</strong> medicin der ikke er taget i dag!
+                        </p>
+                        <ul class="list-unstyled mb-3">
+                            @foreach (var med in Model.RecentMedications.Where(m => !m.IsTakenToday))
+                            {
+                                <li class="mb-1">
+                                    <i class="bi bi-capsule text-danger me-2"></i>
+                                    <strong>@med.Name</strong>
+                                </li>
+                            }
+                        </ul>
+                        <a href="/Medications/Today" class="btn btn-warning btn-lg shadow-sm">
+                            <i class="bi bi-capsule me-2"></i>Gå til Medicin
+                        </a>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        }
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-primary border-2 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-primary text-white rounded-circle p-2 me-3">
+                                <i class="bi bi-person-circle fs-4"></i>
+                            </div>
+                            <h5 class="card-title text-primary mb-0">Min Profil</h5>
+                        </div>
+                        <p class="card-text"><strong>Navn:</strong> @Model.CurrentUser?.FirstName @Model.CurrentUser?.LastName</p>
+                        <p class="card-text"><strong>CPR:</strong> @Model.PatientProfile.CprNumber</p>
+                        <a href="/Symptoms/Create" class="btn btn-primary w-100">
+                            <i class="bi bi-plus-circle me-1"></i>Registrer Symptom
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-success border-2 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <div class="bg-success text-white rounded-circle p-2 d-inline-block mb-2">
+                            <i class="bi bi-activity fs-4"></i>
+                        </div>
+                        <h5 class="card-title text-success">Seneste Symptomer</h5>
+                        <p class="display-4 fw-bold text-success">@Model.RecentSymptoms.Count</p>
+                        <a href="/Symptoms/History" class="btn btn-success w-100">Se historik</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-info border-2 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <div class="bg-info text-white rounded-circle p-2 d-inline-block mb-2">
+                            <i class="bi bi-capsule fs-4"></i>
+                        </div>
+                        <h5 class="card-title text-info">Medicin</h5>
+                        <p class="mb-3">Dagens medicin</p>
+                        <a href="/Medications/Today" class="btn btn-info text-white w-100">Se medicin</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @* ─── RELATIVE DASHBOARD ─── *@
+    @if (Model.IsRelative)
+    {
+        <div class="d-flex align-items-center mb-4">
+            <div class="bg-warning text-dark rounded-circle p-3 me-3">
+                <i class="bi bi-person-heart fs-2"></i>
+            </div>
+            <h1 class="mb-0">Min Patient</h1>
+        </div>
+
+        @if (Model.FollowedPatients.Any())
+        {
+            <div class="row g-4">
+                @foreach (var patient in Model.FollowedPatients)
+                {
+                    <div class="col-md-6">
+                        <div class="card border-warning border-3 shadow-lg h-100">
+                            <div class="card-header bg-warning text-dark">
+                                <h5 class="mb-0"><i class="bi bi-person-heart me-2"></i>@Model.PatientName</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <p class="mb-1 text-muted"><i class="bi bi-card-text me-1"></i>CPR</p>
+                                        <p class="fw-bold fs-5">@Model.PatientCpr</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="mb-1 text-muted"><i class="bi bi-calendar me-1"></i>Født</p>
+                                        <p class="fw-bold fs-5">@Model.PatientBirthDate?.ToString("dd-MM-yyyy")</p>
+                                    </div>
+                                </div>
+
+                                <hr />
+
+                                <div class="d-grid gap-2">
+                                    <a href="/Patients/Details/@patient.Id" class="btn btn-warning btn-lg">
+                                        <i class="bi bi-eye me-2"></i>Se Detaljer
+                                    </a>
+                                    <a href="/Observations/Create" class="btn btn-outline-warning">
+                                        <i class="bi bi-pencil me-2"></i>Skriv Observation
+                                    </a>
+                                    <a href="/Medications/Today" class="btn btn-outline-success">
+                                        <i class="bi bi-capsule me-2"></i>Se Medicin
+                                    </a>
+                                    <a href="/Reports/PatientReport" class="btn btn-outline-primary">
+                                        <i class="bi bi-file-earmark-text me-2"></i>Se Rapport
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card border-info border-2 shadow-sm h-100">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0"><i class="bi bi-activity me-2"></i>Seneste Aktivitet</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-light">
+                                    <i class="bi bi-info-circle me-2"></i>
+                                    Du kan følge @Model.PatientName's helbred her.
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span><i class="bi bi-capsule me-2 text-success"></i>Medicin status</span>
+                                        <a href="/Medications/Today" class="btn btn-sm btn-success">Tjek</a>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span><i class="bi bi-journal-medical me-2 text-info"></i>Observationer</span>
+                                        <a href="/Observations" class="btn btn-sm btn-info text-white">Se</a>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span><i class="bi bi-file-earmark-text me-2 text-primary"></i>Rapport</span>
+                                        <a href="/Reports/PatientReport" class="btn btn-sm btn-primary">Åbn</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                Ingen patient tilknyttet endnu. Kontakt personale.
+            </div>
+        }
+    }
+</div>

@@ -1,0 +1,24 @@
+﻿@page
+@model LeisnerCare.Web.Pages.Staff.DashboardModel
+@{
+    ViewData["Title"] = "Staff Dashboard";
+}
+
+<h1>Dashboard - Røde Flag</h1>
+
+@if (Model.Alerts.Any())
+{
+    @foreach (var alert in Model.Alerts)
+    {
+        <div class="alert alert-danger">
+            <h4>🚨 @alert.PatientName</h4>
+            <p>@alert.AlertType: @alert.Count gange denne uge</p>
+        </div>
+    }
+}
+else
+{
+    <div class="alert alert-success">
+        ✅ Ingen røde flag denne uge
+    </div>
+}

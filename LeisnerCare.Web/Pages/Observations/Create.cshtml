@@ -1,0 +1,47 @@
+﻿@page
+@model LeisnerCare.Web.Pages.Observations.CreateModel
+@{
+    ViewData["Title"] = "Ny Observation";
+}
+
+<h1>Ny Observation</h1>
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    @if (Model.IsRelative && Model.FixedPatientId.HasValue)
+    {
+        // Relative: Skjul dropdown, vis patient info
+        <input type="hidden" asp-for="Input.PatientId" />
+        <div class="alert alert-info mb-3">
+            <i class="bi bi-person-heart me-2"></i>
+            Du skriver observation til din patient (CPR: @Model.Patients.FirstOrDefault()?.Text)
+        </div>
+    }
+    else
+    {
+        // Staff: Vis dropdown
+        <div class="form-group mb-3">
+            <label asp-for="Input.PatientId">Patient</label>
+            <select asp-for="Input.PatientId" asp-items="Model.Patients" class="form-control form-control-lg"></select>
+        </div>
+    }
+
+    <div class="form-group mb-3">
+        <label asp-for="Input.Content">Beskrivelse</label>
+        <textarea asp-for="Input.Content" class="form-control form-control-lg" rows="5" placeholder="Beskriv hvad du observerede..."></textarea>
+    </div>
+
+    @if (Model.IsStaff)
+    {
+        <div class="form-check mb-3">
+            <input asp-for="Input.IsClinical" class="form-check-input" type="checkbox" />
+            <label asp-for="Input.IsClinical" class="form-check-label">Klinisk note (kun personale)</label>
+        </div>
+    }
+
+    <button type="submit" class="btn btn-success btn-lg">
+        <i class="bi bi-check-circle me-1"></i>Gem
+    </button>
+    <a asp-page="./Index" class="btn btn-secondary btn-lg">Tilbage</a>
+</form>

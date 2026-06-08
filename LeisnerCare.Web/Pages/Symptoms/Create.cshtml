@@ -1,0 +1,90 @@
+﻿@page
+@model LeisnerCare.Web.Pages.Symptoms.CreateModel
+@{
+    ViewData["Title"] = "📝 Registrer Symptom";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-primary text-white text-center py-3">
+                <h2 class="mb-0"><i class="bi bi-activity me-2"></i>Registrer Symptom</h2>
+            </div>
+            <div class="card-body p-4">
+                <form method="post">
+                    <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-emoji-smile me-1 text-warning"></i>Hvordan har du det?
+                        </label>
+                        <div class="d-flex justify-content-between gap-2">
+                            <button type="button" class="btn btn-outline-secondary btn-lg flex-fill symptom-btn" data-value="1">
+                                😢<<br><small>Meget dårligt</small>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-lg flex-fill symptom-btn" data-value="2">
+                                😕<<br><small>Dårligt</small>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-lg flex-fill symptom-btn" data-value="3">
+                                😐<<br><small>OK</small>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-lg flex-fill symptom-btn" data-value="4">
+                                🙂<<br><small>Godt</small>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-lg flex-fill symptom-btn" data-value="5">
+                                😄<<br><small>Meget godt</small>
+                            </button>
+                        </div>
+                        <input type="hidden" asp-for="Input.Value" id="symptomValue" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Type" class="form-label fw-bold">
+                            <i class="bi bi-tag me-1 text-info"></i>Type
+                        </label>
+                        <select asp-for="Input.Type" class="form-select form-select-lg">
+                            <option value="Mood">😊 Humør</option>
+                            <option value="Tremor">👋 Tremor (Rysten)</option>
+                            <option value="OnOff">⚡ ON/OFF Tilstand</option>
+                            <option value="Pain">💢 Smerte</option>
+                            <option value="Sleep">😴 Søvn</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Input.Note" class="form-label fw-bold">
+                            <i class="bi bi-chat-left-text me-1 text-muted"></i>Note (valgfri)
+                        </label>
+                        <textarea asp-for="Input.Note" class="form-control" rows="3"
+                                  placeholder="Beskriv hvordan du føler dig..."></textarea>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-check-lg me-2"></i>Gem Symptom
+                        </button>
+                        <a href="/Dashboard" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>Tilbage
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.symptom-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.symptom-btn').forEach(b => {
+                    b.classList.remove('btn-primary', 'text-white');
+                    b.classList.add('btn-outline-secondary');
+                });
+                this.classList.remove('btn-outline-secondary');
+                this.classList.add('btn-primary', 'text-white');
+                document.getElementById('symptomValue').value = this.dataset.value;
+            });
+        });
+    </script>
+}

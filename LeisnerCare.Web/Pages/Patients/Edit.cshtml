@@ -1,0 +1,60 @@
+﻿@page "{id:int}"
+@model LeisnerCare.Web.Pages.Patients.EditModel
+@{
+    ViewData["Title"] = "Rediger Patient";
+}
+
+<h1>Rediger Patient</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <input type="hidden" asp-for="Patient.Id" />
+            <input type="hidden" asp-for="Patient.UserId" />
+            <input type="hidden" asp-for="Patient.CreatedAt" />
+
+            <div class="mb-3">
+                <label asp-for="Patient.CprNumber" class="form-label">CPR-nummer</label>
+                <input asp-for="Patient.CprNumber" class="form-control" />
+                <span asp-validation-for="Patient.CprNumber" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Patient.DateOfBirth" class="form-label">Fødselsdato</label>
+                <input asp-for="Patient.DateOfBirth" type="date" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Patient.DiagnosisDate" class="form-label">Diagnosedato</label>
+                <input asp-for="Patient.DiagnosisDate" type="date" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Patient.ContactPhone" class="form-label">Telefon</label>
+                <input asp-for="Patient.ContactPhone" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Patient.EmergencyContactName" class="form-label">Nødkontakt navn</label>
+                <input asp-for="Patient.EmergencyContactName" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Patient.EmergencyContactPhone" class="form-label">Nødkontakt telefon</label>
+                <input asp-for="Patient.EmergencyContactPhone" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Patient.RelativeUserId" class="form-label">Tilknyttet pårørende</label>
+                <select asp-for="Patient.RelativeUserId" asp-items="Model.RelativeOptions" class="form-select"></select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Gem ændringer</button>
+            <a asp-page="./Index" class="btn btn-secondary">Tilbage</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

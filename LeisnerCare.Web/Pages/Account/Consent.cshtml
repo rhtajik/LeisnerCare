@@ -1,0 +1,41 @@
+﻿@page
+@model LeisnerCare.Web.Pages.Account.ConsentModel
+@{
+    ViewData["Title"] = "Samtykke";
+}
+
+<h2>GDPR Samtykke</h2>
+
+@if (Model.HasConsent)
+{
+    <div class="alert alert-success">
+        <p>✅ Du har givet samtykke den <strong>@Model.ConsentDate</strong></p>
+        <p>Sundhedspersonale og pårørende kan se dine sundhedsdata.</p>
+    </div>
+
+    <form method="post" asp-page-handler="WithdrawConsent">
+        <button type="submit" class="btn btn-danger">
+            Træk samtykke tilbage
+        </button>
+    </form>
+}
+else
+{
+    <div class="alert alert-warning">
+        <p>⚠️ Du har ikke givet samtykke endnu.</p>
+        <p>Uden samtykke kan sundhedspersonale og pårørende ikke se dine data.</p>
+    </div>
+
+    <form method="post" asp-page-handler="GiveConsent">
+        <div class="form-check mb-3">
+            <input type="checkbox" class="form-check-input" id="confirmConsent" required />
+            <label class="form-check-label" for="confirmConsent">
+                Jeg giver samtykke til, at sundhedspersonale og pårørende
+                kan registrere og se mine sundhedsdata i LeisnerCare systemet.
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary">
+            Giv samtykke
+        </button>
+    </form>
+}

@@ -1,0 +1,97 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Opret konto";
+}
+
+<div class="row justify-content-center align-items-center min-vh-100">
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-success text-white text-center py-4">
+                <i class="bi bi-heart-pulse-fill display-4 mb-2"></i>
+                <h2 class="mb-0">LeisnerCare</h2>
+                <p class="mb-0 opacity-75">Parkinson Monitor</p>
+            </div>
+            <div class="card-body p-4">
+                <h4 class="text-center mb-4 text-muted">
+                    <i class="bi bi-person-plus me-2"></i>Opret konto
+                </h4>
+
+                <form method="post">
+                    <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Input.FirstName" class="form-label">
+                                <i class="bi bi-person me-1 text-success"></i>Fornavn
+                            </label>
+                            <input asp-for="Input.FirstName" class="form-control"
+                                   placeholder="Fornavn" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Input.LastName" class="form-label">
+                                <i class="bi bi-person me-1 text-success"></i>Efternavn
+                            </label>
+                            <input asp-for="Input.LastName" class="form-control"
+                                   placeholder="Efternavn" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Email" class="form-label">
+                            <i class="bi bi-envelope me-1 text-success"></i>Email
+                        </label>
+                        <input asp-for="Input.Email" class="form-control form-control-lg"
+                               placeholder="din@email.dk" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Password" class="form-label">
+                            <i class="bi bi-lock me-1 text-success"></i>Password
+                        </label>
+                        <input asp-for="Input.Password" type="password" class="form-control form-control-lg"
+                               placeholder="Min. 6 tegn" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.ConfirmPassword" class="form-label">
+                            <i class="bi bi-lock-fill me-1 text-success"></i>Bekræft password
+                        </label>
+                        <input asp-for="Input.ConfirmPassword" type="password" class="form-control form-control-lg"
+                               placeholder="Gentag password" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Role" class="form-label">
+                            <i class="bi bi-person-badge me-1 text-success"></i>Rolle
+                        </label>
+                        <select asp-for="Input.Role" class="form-select form-select-lg">
+                            <option value="Patient">😊 Patient</option>
+                            <option value="Relative">👨‍👩‍👧 Pårørende</option>
+                            <option value="Staff">👨‍⚕️ Personale</option>
+                        </select>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-check-lg me-2"></i>Opret konto
+                        </button>
+                    </div>
+                </form>
+
+                <hr class="my-4" />
+
+                <div class="text-center">
+                    <p class="text-muted mb-2">Har du allerede en konto?</p>
+                    <a href="/Account/Login" class="btn btn-outline-primary">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Log ind
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

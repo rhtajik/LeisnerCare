@@ -1,0 +1,84 @@
+﻿@page
+@model LeisnerCare.Web.Pages.Staff.SymptomOverviewModel
+@{
+    ViewData["Title"] = "Symptom Oversigt";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-activity me-2 text-danger"></i>Symptom Oversigt</h1>
+    <a href="/Dashboard" class="btn btn-secondary">
+        <i class="bi bi-arrow-left me-1"></i>Tilbage
+    </a>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white border-0">
+            <div class="card-body text-center">
+                <i class="bi bi-clipboard-data display-4 mb-2"></i>
+                <h5>Total Symptomer</h5>
+                <p class="display-5 fw-bold mb-0">@Model.Symptoms.Count</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-danger text-white border-0">
+            <div class="card-body text-center">
+                <i class="bi bi-exclamation-triangle display-4 mb-2"></i>
+                <h5>OFF Perioder</h5>
+                <p class="display-5 fw-bold mb-0">
+                    @Model.Symptoms.Count(s => s.Type == LeisnerCare.Core.Entities.SymptomType.OnOff && s.Value == 1)
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-dark text-white">
+        <h5 class="mb-0"><i class="bi bi-list me-2"></i>Alle Symptomer</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Patient</th>
+                        <th>Dato</th>
+                        <th>Type</th>
+                        <th>Værdi</th>
+                        <th>Note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in Model.Symptoms)
+                    {
+                        <tr>
+                            <td class="fw-bold">
+                                @s.Patient?.User?.FirstName @s.Patient?.User?.LastName
+                            </td>
+                            <td>@s.RecordedAt.ToString("dd/MM HH:mm")</td>
+                            <td>
+                                <span class="badge @(s.Type == LeisnerCare.Core.Entities.SymptomType.OnOff ? "bg-warning text-dark" :
+                                                                                          s.Type == LeisnerCare.Core.Entities.SymptomType.Tremor ? "bg-danger" : "bg-info")">
+                                @s.Type
+                            </span>
+                        </td>
+                        <td>
+                            @if (s.Type == LeisnerCare.Core.Entities.SymptomType.OnOff)
+                                {
+                                    @(s.Value == 0 ? "ON" : s.Value == 1 ? "OFF" : "DYSKINESI")
+                                }
+                                else
+                                {
+                                    @s.Value
+                                }
+                            </td>
+                            <td class="text-muted">@s.Note</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

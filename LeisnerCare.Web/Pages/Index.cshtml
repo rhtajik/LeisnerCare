@@ -1,0 +1,144 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Forside";
+}
+
+<!-- Hero Section -->
+<div class="bg-primary text-white py-5">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">
+            <i class="bi bi-heart-pulse-fill"></i>
+            LeisnerCare Parkinson Monitor
+        </h1>
+        <p class="lead mb-4">Digital overvågning og registrering af Parkinson-symptomer</p>
+        <div class="d-flex justify-content-center gap-3">
+            @if (!User.Identity?.IsAuthenticated ?? true)
+            {
+                <a href="/Account/Login" class="btn btn-light btn-lg fw-bold">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Log ind
+                </a>
+                <a href="/Account/Register" class="btn btn-outline-light btn-lg">
+                    <i class="bi bi-person-plus me-2"></i>Opret konto
+                </a>
+            }
+            else
+            {
+                <span class="badge bg-light text-primary fs-5 p-2">
+                    <i class="bi bi-person-check me-2"></i>Velkommen, @User.Identity?.Name
+                </span>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="container py-5">
+    <h2 class="text-center mb-5">Systemets Funktioner</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="text-primary mb-3">
+                        <i class="bi bi-activity fs-1"></i>
+                    </div>
+                    <h5 class="card-title">Symptomregistrering</h5>
+                    <p class="card-text text-muted">
+                        Patienter kan dagligt registrere tremor, ON/OFF-tilstand og humør på en nem 1-5 skala.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="text-success mb-3">
+                        <i class="bi bi-capsule fs-1"></i>
+                    </div>
+                    <h5 class="card-title">Medicinhåndtering</h5>
+                    <p class="card-text text-muted">
+                        Overblik over medicin, dosering og indtagelsestider med effektivitetssporing.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="text-info mb-3">
+                        <i class="bi bi-journal-medical fs-1"></i>
+                    </div>
+                    <h5 class="card-title">Kliniske Observationer</h5>
+                    <p class="card-text text-muted">
+                        Pårørende og personale kan tilføje observationer og audit-logge alle handlinger.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Roles Section -->
+<div class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Tilpasset til Dig</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-primary h-100">
+                    <div class="card-header bg-primary text-white">
+                        <i class="bi bi-person me-2"></i>For Patienter
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Registrer symptomer nemt</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Se din egen historik</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Track medicinindtag</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-success h-100">
+                    <div class="card-header bg-success text-white">
+                        <i class="bi bi-people me-2"></i>For Pårørende
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Tilføj observationer</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Følg patientens status</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Kommunikér med personale</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-info h-100">
+                    <div class="card-header bg-info text-white">
+                        <i class="bi bi-hospital me-2"></i>For Personale
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Håndtér patienter</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Se audit logs</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Generér PDF-rapporter</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- GDPR Section -->
+<div class="container py-5">
+    <div class="alert alert-info d-flex align-items-center" role="alert">
+        <i class="bi bi-shield-check fs-3 me-3"></i>
+        <div>
+            <h5 class="alert-heading">GDPR & Datasikkerhed</h5>
+            <p class="mb-0">
+                LeisnerCare overholder GDPR med samtykkehåndtering, audit-logging og sikker datalagring.
+                Alle handlinger logges automatisk.
+            </p>
+        </div>
+    </div>
+</div>

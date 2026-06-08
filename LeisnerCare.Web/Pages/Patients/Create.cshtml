@@ -1,0 +1,76 @@
+﻿@page
+@model LeisnerCare.Web.Pages.Patients.CreateModel
+@{
+    ViewData["Title"] = "Opret Patient";
+}
+
+<h1>Opret Patient</h1>
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <h4>Brugeroplysninger</h4>
+    <div class="form-group mb-3">
+        <label asp-for="Input.Email">Email</label>
+        <input asp-for="Input.Email" class="form-control form-control-lg" type="email" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Input.Password">Password</label>
+        <input asp-for="Input.Password" class="form-control form-control-lg" type="password" />
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 form-group mb-3">
+            <label asp-for="Input.FirstName">Fornavn</label>
+            <input asp-for="Input.FirstName" class="form-control form-control-lg" />
+        </div>
+        <div class="col-md-6 form-group mb-3">
+            <label asp-for="Input.LastName">Efternavn</label>
+            <input asp-for="Input.LastName" class="form-control form-control-lg" />
+        </div>
+    </div>
+
+    <h4>Patientoplysninger</h4>
+    <div class="form-group mb-3">
+        <label asp-for="Input.CprNumber">CPR-nummer (10 cifre)</label>
+        <input asp-for="Input.CprNumber" class="form-control form-control-lg" maxlength="10" />
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 form-group mb-3">
+            <label asp-for="Input.DateOfBirth">Fødselsdato</label>
+            <input asp-for="Input.DateOfBirth" class="form-control form-control-lg" type="date" />
+        </div>
+        <div class="col-md-6 form-group mb-3">
+            <label asp-for="Input.DiagnosisDate">Diagnosedato</label>
+            <input asp-for="Input.DiagnosisDate" class="form-control form-control-lg" type="date" />
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Input.ContactPhone">Telefon</label>
+        <input asp-for="Input.ContactPhone" class="form-control form-control-lg" />
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 form-group mb-3">
+            <label asp-for="Input.EmergencyContactName">Kontaktperson (navn)</label>
+            <input asp-for="Input.EmergencyContactName" class="form-control form-control-lg" />
+        </div>
+        <div class="col-md-6 form-group mb-3">
+            <label asp-for="Input.EmergencyContactPhone">Kontaktperson (telefon)</label>
+            <input asp-for="Input.EmergencyContactPhone" class="form-control form-control-lg" />
+        </div>
+    </div>
+    <div class="form-check mb-3">
+        <input asp-for="Input.ConsentGiven" class="form-check-input" type="checkbox" required />
+        <label asp-for="Input.ConsentGiven" class="form-check-label">
+            Jeg giver samtykke til, at sundhedspersonale og pårørende kan se mine sundhedsdata
+        </label>
+        <span asp-validation-for="Input.ConsentGiven" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-lg">💾 Gem Patient</button>
+    <a asp-page="Index" class="btn btn-secondary btn-lg">Annuller</a>
+</form>
