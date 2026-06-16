@@ -6,8 +6,13 @@ public class Medication
     public int PatientId { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Dosage { get; set; } = string.Empty;
-    public string Frequency { get; set; } = string.Empty; // "Morgen, Aften" eller "Hver 4. time"
-    public TimeSpan? TimeOfDay { get; set; } // F.eks. 08:00
+    public string Frequency { get; set; } = string.Empty;
+
+    // 3 tidspunkter 
+    public TimeSpan? TimeOfDay { get; set; }   // F.eks. 08:00
+    public TimeSpan? TimeOfDay2 { get; set; }  // F.eks. 14:00
+    public TimeSpan? TimeOfDay3 { get; set; }  // F.eks. 20:00
+
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
 

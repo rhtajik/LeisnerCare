@@ -22,6 +22,8 @@ namespace LeisnerCare.Core.Entities
     {
         Tremor,      // Rysten
         OnOff,       // ON/OFF tilstand
-        Mood         // Humør
+        Mood,        // Humør
+        Pain,        // Smerte
+        Sleep        // Søvn
     }
 }

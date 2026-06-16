@@ -31,7 +31,11 @@ public class CreateModel : PageModel
         public string Name { get; set; } = string.Empty;
         public string Dosage { get; set; } = string.Empty;
         public string Frequency { get; set; } = string.Empty;
+
+        // 3 tidspunkter
         public TimeSpan? TimeOfDay { get; set; }
+        public TimeSpan? TimeOfDay2 { get; set; }
+        public TimeSpan? TimeOfDay3 { get; set; }
     }
 
     public void OnGet()
@@ -56,6 +60,8 @@ public class CreateModel : PageModel
             Dosage = Input.Dosage,
             Frequency = Input.Frequency,
             TimeOfDay = Input.TimeOfDay,
+            TimeOfDay2 = Input.TimeOfDay2,
+            TimeOfDay3 = Input.TimeOfDay3,
             StartDate = DateTime.UtcNow
         };
 

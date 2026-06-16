@@ -14,6 +14,7 @@
                 <form method="post">
                     <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
 
+                    <!-- Patient -->
                     <div class="mb-3">
                         <label asp-for="Input.PatientId" class="form-label fw-bold">
                             <i class="bi bi-person me-1 text-primary"></i>Patient
@@ -24,21 +25,23 @@
                         </select>
                     </div>
 
+                    <!-- Medicin navn -->
                     <div class="mb-3">
                         <label asp-for="Input.Name" class="form-label fw-bold">
                             <i class="bi bi-capsule me-1 text-success"></i>Medicin navn
                         </label>
                         <input asp-for="Input.Name" class="form-control form-control-lg"
-                               placeholder="f.eks. Panodil, Ibuprofen..." />
+                               placeholder="f.eks. Levodopa, Sinemet..." />
                     </div>
 
+                    <!-- Dosis + Frekvens -->
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label asp-for="Input.Dosage" class="form-label fw-bold">
                                 <i class="bi bi-droplet me-1 text-info"></i>Dosis
                             </label>
                             <input asp-for="Input.Dosage" class="form-control form-control-lg"
-                                   placeholder="f.eks. 500 mg" />
+                                   placeholder="f.eks. 100 mg" />
                         </div>
                         <div class="col-md-6 mb-3">
                             <label asp-for="Input.Frequency" class="form-label fw-bold">
@@ -49,14 +52,30 @@
                         </div>
                     </div>
 
-                    <div class="mb-4">
-                        <label asp-for="Input.TimeOfDay" class="form-label fw-bold">
-                            <i class="bi bi-alarm me-1 text-danger"></i>Tidspunkt
+                    <!-- Tidspunkter -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-alarm me-1 text-danger"></i>Tidspunkter
                         </label>
-                        <input asp-for="Input.TimeOfDay" type="time" class="form-control form-control-lg" />
+                        <div class="row g-2">
+                            <div class="col-md-4">
+                                <label asp-for="Input.TimeOfDay" class="form-label small text-muted">Tidspunkt 1</label>
+                                <input asp-for="Input.TimeOfDay" type="time" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Input.TimeOfDay2" class="form-label small text-muted">Tidspunkt 2 (valgfri)</label>
+                                <input asp-for="Input.TimeOfDay2" type="time" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Input.TimeOfDay3" class="form-label small text-muted">Tidspunkt 3 (valgfri)</label>
+                                <input asp-for="Input.TimeOfDay3" type="time" class="form-control" />
+                            </div>
+                        </div>
+                        <small class="text-muted">Angiv 1-3 tidspunkter afhængig af frekvens</small>
                     </div>
 
-                    <div class="d-grid gap-2">
+                    <!-- Knapper -->
+                    <div class="d-grid gap-2 mt-4">
                         <button type="submit" class="btn btn-success btn-lg">
                             <i class="bi bi-check-lg me-2"></i>Gem Medicin
                         </button>

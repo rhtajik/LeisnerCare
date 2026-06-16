@@ -53,11 +53,18 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         });
 
         // Medication konfiguration
-        builder.Entity < Medication > (entity =>
+        builder.Entity<Medication>(entity =>
         {
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.Dosage).HasMaxLength(50);
+            entity.Property(e => e.Frequency).HasMaxLength(50);
+
+            // Nye felter
+            entity.Property(e => e.TimeOfDay);
+            entity.Property(e => e.TimeOfDay2);
+            entity.Property(e => e.TimeOfDay3);
+
             entity.HasOne(e => e.Patient)
                   .WithMany()
                   .HasForeignKey(e => e.PatientId)
