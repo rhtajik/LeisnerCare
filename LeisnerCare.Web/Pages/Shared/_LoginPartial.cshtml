@@ -3,33 +3,45 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+@{
+    var displayName = User.Identity?.Name ?? "";
+    if (User.Identity?.IsAuthenticated == true)
+    {
+        var user = await UserManager.GetUserAsync(User);
+        if (user != null && !string.IsNullOrEmpty(user.FirstName))
+        {
+            displayName = $"{user.FirstName} {user.LastName}".Trim();
+        }
+    }
+}
+
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a class="nav-link text-white" href="#">
-            <i class="bi bi-person-circle me-1"></i>@UserManager.GetUserName(User)
-        </a>
-    </li>
-    <li class="nav-item">
-        <form class="form-inline" method="post" asp-page="/Account/Logout">
-            <button type="submit" class="nav-link btn btn-link text-white">
-                <i class="bi bi-box-arrow-right me-1"></i>Log ud
-            </button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-white" asp-page="/Account/Register">
-            <i class="bi bi-person-plus me-1"></i>Opret konto
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-white" asp-page="/Account/Login">
-            <i class="bi bi-box-arrow-in-right me-1"></i>Log ind
-        </a>
-    </li>
-}
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <span class="nav-link text-white">
+                <i class="bi bi-person-circle me-1"></i>Velkommen, @displayName
+            </span>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" method="post" asp-page="/Account/Logout">
+                <button type="submit" class="nav-link btn btn-link text-white">
+                    <i class="bi bi-box-arrow-right me-1"></i>Log ud
+                </button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-white" asp-page="/Account/Register">
+                <i class="bi bi-person-plus me-1"></i>Opret konto
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white" asp-page="/Account/Login">
+                <i class="bi bi-box-arrow-in-right me-1"></i>Log ind
+            </a>
+        </li>
+    }
 </ul>

@@ -1,4 +1,21 @@
-﻿<!DOCTYPE html>
+﻿@using LeisnerCare.Core.Entities
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    var displayName = User.Identity?.Name ?? "";
+    if (User.Identity?.IsAuthenticated == true)
+    {
+        var user = await UserManager.GetUserAsync(User);
+        if (user != null && !string.IsNullOrEmpty(user.FirstName))
+        {
+            displayName = $"{user.FirstName} {user.LastName}".Trim();
+        }
+    }
+}
+
+<!DOCTYPE html>
 <html lang="da">
 <head>
     <meta charset="utf-8" />
@@ -36,7 +53,6 @@
                         <li class="nav-item"><a class="nav-link" href="/Observations">Observationer</a></li>
                         <li class="nav-item"><a class="nav-link" href="/Reports/PatientReport">Rapport</a></li>
 
-                        <!-- NYE DROPDOWN -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                                 <i class="bi bi-gear me-1"></i>Admin
@@ -66,7 +82,33 @@
                         <li class="nav-item"><a class="nav-link" href="/Reports/PatientReport">📄 Rapport</a></li>
                     }
                 </ul>
-                <partial name="_LoginPartial" />
+
+                <!-- LOGIN DEL - med navn i stedet for email -->
+                <ul class="navbar-nav">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <span class="nav-link text-white">
+                                <i class="bi bi-person-circle me-1"></i>Velkommen, @displayName
+                            </span>
+                        </li>
+                        <li class="nav-item">
+                            <form method="post" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" class="d-inline">
+                                <button type="submit" class="btn btn-link nav-link text-white">
+                                    <i class="bi bi-box-arrow-right me-1"></i>Log ud
+                                </button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-page="/Account/Login">
+                                <i class="bi bi-box-arrow-in-right me-1"></i>Log ind
+                            </a>
+                        </li>
+                    }
+                </ul>
             </div>
         </div>
     </nav>

@@ -1,7 +1,20 @@
 ﻿@page
 @model IndexModel
+@using LeisnerCare.Core.Entities
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Forside";
+
+    var displayName = User.Identity?.Name ?? "";
+    if (User.Identity?.IsAuthenticated == true)
+    {
+        var user = await UserManager.GetUserAsync(User);
+        if (user != null && !string.IsNullOrEmpty(user.FirstName))
+        {
+            displayName = $"{user.FirstName} {user.LastName}".Trim();
+        }
+    }
 }
 
 <!-- Hero Section -->
@@ -25,7 +38,7 @@
             else
             {
                 <span class="badge bg-light text-primary fs-5 p-2">
-                    <i class="bi bi-person-check me-2"></i>Velkommen, @User.Identity?.Name
+                    <i class="bi bi-person-check me-2"></i>Velkommen, @displayName
                 </span>
             }
         </div>
